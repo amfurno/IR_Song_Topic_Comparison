@@ -9,4 +9,6 @@ an app that semantically compares songs to determine if they have similar topics
 -  `pip install spotipy`
 -  `pip install lyricsgenius`
 -  `pip install gensim`
+-  `pip install nltk`
+-  `pip install pytest`
 3. run the app
