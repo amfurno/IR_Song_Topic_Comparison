@@ -14,7 +14,25 @@ import time
 USER = 'spotify' #all of our playlists will be coming from spotify
 TOP_HITS_ID = '37i9dQZF1DXcBWIGoYBM5M' #this is the top hits playlist, used for building test corpus
 
+def getSongLyrics(song):
+    title = song['track']['name']
+    artist = song['track']['artists'][0]['name']
+    Lyrics.uprint("current song:", title)
+    lyrics = Lyrics.getSongLyrics(title, artist, genius)
+    return(lyrics)
 
+def removeGeniusTags(lyrics):
+    #remove genius tags: [verse 1], [chorus], etc
+    while re.search('\[.*\]', lyrics):
+        lyrics = re.sub('\[.*\]', '', lyrics)
+    return(lyrics)
+
+def tokenizeSong(lyrics):
+    lyrics = lyrics.lower()
+    doc = tokenizer.tokenize(lyrics)
+    doc = [token for token in doc if not token.isnumeric() and len(token) > 1 and token.isalpha()]   
+    doc = [lemmatizer.lemmatize(token) for token in doc] 
+    return(doc)
 
 if __name__ == '__main__':
     start = time.perf_counter()
@@ -33,24 +51,12 @@ if __name__ == '__main__':
     
     playist = sp.user_playlist(USER, TOP_HITS_ID)
     songs = Lyrics.get_playlist_tracks(USER, TOP_HITS_ID, sp)
-    for song in songs:
-        title = song['track']['name']
-        artist = song['track']['artists'][0]['name']
-        Lyrics.uprint("current song:", title)
-        lyrics = Lyrics.getSongLyrics(title, artist, genius)
 
-        #remove genius tags: [verse 1], [chorus], etc
-        while re.search('\[.*\]', lyrics):
-            lyrics = re.sub('\[.*\]', '', lyrics)
-
-        #convert the string to a list of tokens
-        lyrics = lyrics.lower()
-        doc = tokenizer.tokenize(lyrics)
-        doc = [token for token in doc if not token.isnumeric() and len(token) > 1 and token.isalpha()]   
-        doc = [lemmatizer.lemmatize(token) for token in doc] 
+    for song in songs:       
+        lyrics = getSongLyrics(song)
+        lyrics = removeGeniusTags(lyrics)
+        doc = tokenizeSong(lyrics)
         docs.append(doc)
-
-        bigram = Phrases(docs, min_count=20)
 
     finDocs = time.perf_counter()
     print(f"\nfinished gettings song lyrics in {finDocs - start:0.4f} secs\n")  
