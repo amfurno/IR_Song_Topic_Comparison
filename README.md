@@ -11,4 +11,5 @@ an app that semantically compares songs to determine if they have similar topics
 -  `pip install gensim`
 -  `pip install nltk`
 -  `pip install pytest`
+-  `pip install python-Levenshtein`
 3. run the app

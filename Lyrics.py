@@ -1,9 +1,6 @@
-import os
-import json
 import spotipy
 from lyricsgenius import Genius, genius
 from spotipy.oauth2 import SpotifyClientCredentials
-import API_Keys
 import sys
 
 
@@ -29,10 +26,14 @@ def getPlaylistFollowerCount(user, playlist_id, sp):
     playlist = sp.user_playlist(user, playlist_id)
     return playlist['followers']['total']
 
-def getSongLyrics(title, artistName, geniusToken):
-    artist = geniusToken.search_artist(artistName, max_songs=3, sort = 'title')
-    song = artist.song(title)
-    return(song.lyrics)
+def getSongLyrics(title, artistName, genius):
+    # artist = geniusToken.search_artist(artistName, max_songs=0, sort = 'title')
+    # song = artist.song(title)
+    # return(song.lyrics)
+    songs = genius.search_songs(title + ' ' + artistName)
+    url = songs['hits'][0]['result']['url']
+    song_lyrics = genius.lyrics(song_url=url)
+    return(song_lyrics)
 
 
 
@@ -49,17 +50,3 @@ def getSongLyrics(title, artistName, geniusToken):
 #     else:
 #         playlists = None
 
-
-
-# pl = playlists['items'][0]
-# print(pl['followers']['total'])
-# tracks = get_playlist_tracks("paiqwghgo8plz5ystl4t9plar", playlists['items'][0]['id'])
-
-# songTitle = tracks[0]['track'].keys()
-# print(songTitle)
-# songArtist = tracks[0]['track']['artists'][0]['name']
-
-# genius = Genius(API_Keys.genius_access_token)
-# artist = genius.search_artist(songArtist, max_songs=3, sort = 'title')
-# song = artist.song(songTitle)
-# print(song.lyrics)
