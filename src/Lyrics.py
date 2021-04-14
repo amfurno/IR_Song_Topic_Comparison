@@ -1,6 +1,7 @@
 import spotipy
 from lyricsgenius import Genius, genius
 from spotipy.oauth2 import SpotifyClientCredentials
+import re
 import sys
 
 
@@ -28,6 +29,10 @@ def uprint(*objects, sep=' ', end='\n', file=sys.stdout):
 def getSongLyrics(title, artistName, genius):
     retries = 0
     songs = None
+    url = None
+    firstTtileWord = title.split()[0]
+    firstTtileWord = formatWord(firstTtileWord)
+    title = re.sub('feat\. ', '', title)
     while retries < 5:
         try:
             songs = genius.search_songs(title + ' ' + artistName)
@@ -35,16 +40,28 @@ def getSongLyrics(title, artistName, genius):
         except:
             retries += 1
 
-    if songs == None:
+    if songs == None or len(songs['hits']) < 1:
         return None
-    if len(songs['hits']) < 1:
+    for hit in songs['hits']:
+        hitTitle = hit['result']['title'].split()[0]
+        hitTitle = formatWord(hitTitle)
+        if firstTtileWord == hitTitle:
+            url = hit['result']['url']
+            break
+    if url == None:
         return None
-    url = songs['hits'][0]['result']['url']
     song_lyrics = genius.lyrics(song_url=url)
     return(song_lyrics)
 
 
+def formatWord(word):
+    word = word.lower().encode("ascii", "ignore")
+    word = word.decode()
+    return(word)
+
 # the first 100 playlists that a user has published
+
+
 def getPlaylists(user, sp):
     playlists = sp.user_playlists(user)
     for _ in range(2):
