@@ -16,6 +16,9 @@ USER = 'spotify'  # all of our playlists will be coming from spotify
 TOP_HITS_ID = '37i9dQZF1DXcBWIGoYBM5M'
 PLAYLIST_FILTER = set(['37i9dQZF1DX10zKzsJ2jva', '37i9dQZF1DX4sWSpwq3LiO'])
 STOP_WORDS = set(stopwords.words('english'))
+moreStopWords = set(
+    "uh ah aah aaah aaaah aaaaah ahh ahhhh yee yah huh nah na oh ohh ohhh \
+        ohhhh ohhhhh ohhhhhh ohhhhhhh ohhhhhhhh mmm ooh oooh ooooh oooooh doo".split())
 
 
 def getSongInfo(song):
@@ -45,7 +48,8 @@ def tokenizeSong(lyrics):
     doc = tokenizer.tokenize(lyrics)
     doc = [token for token in doc if (
         not token.isnumeric()) and len(token) > 2]
-    doc = [token for token in doc if not token in STOP_WORDS]
+    doc = [token for token in doc if (not token in STOP_WORDS
+                                      and not token in moreStopWords)]
     doc = [token for token in doc if token.isascii()]
     doc = [lemmatizer.lemmatize(token) for token in doc]
     return(doc)
@@ -72,7 +76,7 @@ if __name__ == '__main__':
     docs = []
     songsUsed = set()
 
-    with open('songsUsed.csv', mode='w', newline='') as songsUsedCSV, open('songLyrics.txt', mode='w') as songLyrics:
+    with open('outputs/songsUsed.csv', mode='w', newline='') as songsUsedCSV, open('outputs/songLyrics.txt', mode='w') as songLyrics:
         songsUsedWriter = csv.writer(
             songsUsedCSV, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         while len(playlistsUsed) <= 50:
@@ -92,11 +96,13 @@ if __name__ == '__main__':
                         continue
                     else:
                         songsUsed.add(song['track']['id'])
+
                     title, artist, lyrics = getSongInfo(song)
                     if lyrics == None:
                         print("failed to get lyrics for %s, %s" %
                               (title, artist))
                         continue
+
                     songsUsedWriter.writerow([title, artist])
                     lyrics = removeGeniusTags(lyrics)
                     doc = tokenizeSong(lyrics)
@@ -113,7 +119,7 @@ if __name__ == '__main__':
                 # Token is a bigram, add to document.
                 docs[idx].append(token)
 
-    with open('corpus.txt', mode='w') as corpus:
+    with open('outputs/corpus.txt', mode='w') as corpus:
         for doc in docs:
             corpus.write(" ".join(doc))
             corpus.write("\n")
