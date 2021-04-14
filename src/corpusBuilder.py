@@ -17,8 +17,9 @@ TOP_HITS_ID = '37i9dQZF1DXcBWIGoYBM5M'
 PLAYLIST_FILTER = set(['37i9dQZF1DX10zKzsJ2jva', '37i9dQZF1DX4sWSpwq3LiO'])
 STOP_WORDS = set(stopwords.words('english'))
 moreStopWords = set(
-    "uh ah aah aaah aaaah aaaaah ahh ahhhh yee yah huh nah na oh ohh ohhh \
-        ohhhh ohhhhh ohhhhhh ohhhhhhh ohhhhhhhh mmm ooh oooh ooooh oooooh doo".split())
+    "ah aah aaah aaaah aaaaah ahh ahhhh yee yah huh nah na oh ohh ohhh \
+        ohhhh ohhhhh ohhhhhh ohhhhhhh ohhhhhhhh mmm ooh oooh ooooh oooooh doo \
+        uh uhh uhhh".split())
 
 
 def getSongInfo(song):
