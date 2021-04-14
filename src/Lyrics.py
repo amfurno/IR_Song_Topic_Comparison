@@ -33,11 +33,13 @@ def getSongLyrics(title, artistName, genius):
     firstTtileWord = title.split()[0]
     firstTtileWord = formatWord(firstTtileWord)
     title = re.sub('feat\. ', '', title)
-    while retries < 5:
+    while retries < 3:
         try:
             songs = genius.search_songs(title + ' ' + artistName)
+            genius.sleep_time = 2
             break
         except:
+            genius.sleep_time *= 2
             retries += 1
 
     if songs == None or len(songs['hits']) < 1:
