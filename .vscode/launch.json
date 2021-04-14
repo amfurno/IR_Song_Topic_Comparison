@@ -11,6 +11,14 @@
             "program": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src\\corpusBuilder.py",
             "console": "integratedTerminal",
             "cwd": "${fileDirname}"
+        },
+        {
+            "name": "Python: modelBuilder",
+            "type": "python",
+            "request": "launch",
+            "program": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src\\modelBuilder.py",
+            "console": "integratedTerminal",
+            "cwd": "${fileDirname}"
         }
     ]
 }

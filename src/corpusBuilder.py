@@ -70,9 +70,11 @@ if __name__ == '__main__':
     playlists = sp.user_playlists(USER)
     playlistsUsed = set()
     docs = []
-    with open('songsUsed.csv', mode='w', newline='') as songsUsed, open('songLyrics.txt', mode='w') as songLyrics:
+    songsUsed = set()
+
+    with open('songsUsed.csv', mode='w', newline='') as songsUsedCSV, open('songLyrics.txt', mode='w') as songLyrics:
         songsUsedWriter = csv.writer(
-            songsUsed, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            songsUsedCSV, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         while len(playlistsUsed) <= 50:
             for i, playlist in enumerate(playlists['items']):
                 if len(playlistsUsed) > 49:
@@ -84,6 +86,12 @@ if __name__ == '__main__':
                 print("geting songs from %d : %s" % (i, playlist['name']))
                 songs = Lyrics.get_playlist_tracks(USER, playlistID, sp)
                 for song in songs:
+                    if song['track'] is None:
+                        continue
+                    if song['track']['id'] in songsUsed:
+                        continue
+                    else:
+                        songsUsed.add(song['track']['id'])
                     title, artist, lyrics = getSongInfo(song)
                     if lyrics == None:
                         print("failed to get lyrics for %s, %s" %
