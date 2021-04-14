@@ -32,22 +32,22 @@ if __name__ == '__main__':
 # Make a index to word dictionary.
     temp = dictionary[0]  # This is only to "load" the dictionary.
     id2word = dictionary.id2token
-
-    model = LdaModel(
-        corpus=corpus,
-        id2word=id2word,
-        chunksize=chunksize,
-        alpha='auto',
-        eta='auto',
-        iterations=iterations,
-        num_topics=num_topics,
-        passes=passes,
-        eval_every=eval_every
-    )
+    for i in range(20, 100, 10):
+        model = LdaModel(
+            corpus=corpus,
+            id2word=id2word,
+            chunksize=chunksize,
+            alpha='auto',
+            eta='auto',
+            iterations=iterations,
+            num_topics=i,
+            passes=passes,
+            eval_every=eval_every
+        )
+         # Average topic coherence is the sum of topic coherences of all topics, divided by the number of topics.
+        avg_topic_coherence = sum([t[1] for t in top_topics]) / num_topics
+        print('Average topic coherence for %d topics: %.4f.' % i, avg_topic_coherence)
 
     top_topics = model.top_topics(corpus)  # , num_words=20)
-    # Average topic coherence is the sum of topic coherences of all topics, divided by the number of topics.
-    avg_topic_coherence = sum([t[1] for t in top_topics]) / num_topics
-    print('Average topic coherence: %.4f.' % avg_topic_coherence)
-
-    pprint(top_topics)
+   
+   
