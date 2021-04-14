@@ -128,7 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
+settings.json
 out.txt
 API_keys.py
 corpus.txt
