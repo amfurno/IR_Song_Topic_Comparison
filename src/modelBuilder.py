@@ -11,17 +11,10 @@ if __name__ == '__main__':
     logging.basicConfig(
         filename='model.log', format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
-    moreStopWords = set(
-        "uh ah aah aaah aaaah aaaaah ahh ahhhh yee yah huh nah na oh ohh ohhh \
-        ohhhh ohhhhh ohhhhhh ohhhhhhh ohhhhhhhh mmm ooh oooh ooooh oooooh doo".split())
-
     docs = []
-    with open('outputs/songLyrics.txt', mode='r') as lyrics:
+    with open('outputs/corpus.txt', mode='r') as lyrics:
         for line in lyrics:
             docs.append(line.split())
-
-    docs = [[token for token in doc if token not in moreStopWords]
-            for doc in docs]
 
     dictionary = Dictionary(docs)
     dictionary.filter_extremes(no_below=10, no_above=0.5)
@@ -40,13 +33,14 @@ if __name__ == '__main__':
 # Make a index to word dictionary.
     temp = dictionary[0]  # This is only to "load" the dictionary.
     id2word = dictionary.id2token
-    with open("outputs/topicCoherence.csv", mode='w', newline='') as coherenceCSV:
+    with open("outputs/topicCoherence.csv", mode='a', newline='') as coherenceCSV:
 
         coherenceWriter = csv.writer(
             coherenceCSV, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         coherenceWriter.writerow(
             ['Number of topics', 'coherence model value', 'avg topic coherence'])
-        for i in range(20, 100, 10):
+
+        for i in range(200, 401, 20):
             model = LdaModel(
                 corpus=corpus,
                 id2word=id2word,
@@ -62,6 +56,8 @@ if __name__ == '__main__':
             coherenceModel = CoherenceModel(
                 model=model, texts=docs, dictionary=dictionary, coherence='c_v')
             top_topics = model.top_topics(corpus)  # , num_words=20)
-            avg_topic_coherence = sum([t[1] for t in top_topics]) / num_topics
+            avg_topic_coherence = sum([t[1] for t in top_topics]) / i
+            coherenceWriter.writerow(
+                [i, coherenceModel.get_coherence(), avg_topic_coherence])
             print('Average topic coherence for %d topics: %.4f.' %
                   (i, avg_topic_coherence))
