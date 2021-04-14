@@ -19,8 +19,16 @@ STOP_WORDS = set(stopwords.words('english'))
 
 
 def getSongInfo(song):
-    title = song['track']['name']
-    artist = song['track']['artists'][0]['name']
+    if song['track'] is not None and song['track']['name'] is not None:
+        title = song['track']['name']
+    else:
+        return(None, None, None)
+    if (song['track']['artists'] is not None and
+            song['track']['artists'][0] is not None and
+            song['track']['artists'][0]['name'] is not None):
+        artist = song['track']['artists'][0]['name']
+    else:
+        return(None, None, None)
     lyrics = Lyrics.getSongLyrics(title, artist, genius)
     return(title, artist, lyrics)
 
@@ -54,7 +62,7 @@ if __name__ == '__main__':
     genius = Genius(API_Keys.genius_access_token)
     genius.excluded_terms = ["(Remix)", "(Live)"]
     genius.timeout = 15
-    genius.sleep_time = 1
+    genius.sleep_time = 2
 
     tokenizer = RegexpTokenizer(r'\w+')
     lemmatizer = WordNetLemmatizer()
@@ -65,9 +73,9 @@ if __name__ == '__main__':
     with open('songsUsed.csv', mode='w', newline='') as songsUsed, open('songLyrics.txt', mode='w') as songLyrics:
         songsUsedWriter = csv.writer(
             songsUsed, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        while len(playlistsUsed) <= 100:
+        while len(playlistsUsed) <= 50:
             for i, playlist in enumerate(playlists['items']):
-                if len(playlistsUsed) > 100:
+                if len(playlistsUsed) > 49:
                     break
                 playlistID = playlist['id']
                 if playlistID in playlistsUsed.union(PLAYLIST_FILTER):
@@ -84,6 +92,7 @@ if __name__ == '__main__':
                     songsUsedWriter.writerow([title, artist])
                     lyrics = removeGeniusTags(lyrics)
                     doc = tokenizeSong(lyrics)
+                    songLyrics.write(' '.join(doc) + '\n')
                     docs.append(doc)
             playlists = sp.next(playlists)
 
