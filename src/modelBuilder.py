@@ -1,11 +1,11 @@
+import csv
+import logging
+from pprint import pprint
+
 from gensim.corpora import Dictionary
 from gensim.models import LdaModel, ldamodel
 from gensim.models.coherencemodel import CoherenceModel
 from gensim.test.utils import datapath
-from nltk.corpus import stopwords
-from pprint import pprint
-import logging
-import csv
 
 if __name__ == '__main__':
 
