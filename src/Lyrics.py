@@ -1,8 +1,12 @@
-import spotipy
-from lyricsgenius import Genius, genius
-from spotipy.oauth2 import SpotifyClientCredentials
+from nltk.corpus import stopwords
 import re
 import sys
+
+STOP_WORDS = set(stopwords.words('english'))
+moreStopWords = set(
+    "ah aah aaah aaaah aaaaah ahh ahhhh yee yah huh nah na oh ohh ohhh \
+        ohhhh ohhhhh ohhhhhh ohhhhhhh ohhhhhhhh mmm ooh oooh ooooh oooooh doo \
+        uh uhh uhhh ayy hmm said gonna".split())
 
 
 # gets all the songs in a playlist
@@ -61,8 +65,6 @@ def formatWord(word):
     word = word.decode()
     return(word)
 
-# the first 100 playlists that a user has published
-
 
 def getPlaylists(user, sp):
     playlists = sp.user_playlists(user)
@@ -73,3 +75,22 @@ def getPlaylists(user, sp):
             playlists = sp.next(playlists)
         else:
             playlists = None
+
+
+def removeGeniusTags(lyrics):
+    # remove genius tags: [verse 1], [chorus], etc
+    while re.search('\[.*\]', lyrics):
+        lyrics = re.sub('\[.*\]', '', lyrics)
+    return(lyrics)
+
+
+def tokenizeSong(lyrics, tk, lm):
+    lyrics = lyrics.lower()
+    doc = tk.tokenize(lyrics)
+    doc = [token for token in doc if (
+        not token.isnumeric()) and len(token) > 2]
+    doc = [token for token in doc if (not token in STOP_WORDS
+                                      and not token in moreStopWords)]
+    doc = [token for token in doc if token.isascii()]
+    doc = [lm.lemmatize(token) for token in doc]
+    return(doc)

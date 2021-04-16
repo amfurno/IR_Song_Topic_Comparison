@@ -6,7 +6,6 @@ from gensim.models import Phrases
 from lyricsgenius import Genius, genius
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem.wordnet import WordNetLemmatizer
-from nltk.corpus import stopwords
 from spotipy.oauth2 import SpotifyClientCredentials
 
 import re
@@ -15,11 +14,6 @@ USER = 'spotify'  # all of our playlists will be coming from spotify
 # this is the top hits playlist, used for building test corpus
 TOP_HITS_ID = '37i9dQZF1DXcBWIGoYBM5M'
 PLAYLIST_FILTER = set(['37i9dQZF1DX10zKzsJ2jva', '37i9dQZF1DX4sWSpwq3LiO'])
-STOP_WORDS = set(stopwords.words('english'))
-moreStopWords = set(
-    "ah aah aaah aaaah aaaaah ahh ahhhh yee yah huh nah na oh ohh ohhh \
-        ohhhh ohhhhh ohhhhhh ohhhhhhh ohhhhhhhh mmm ooh oooh ooooh oooooh doo \
-        uh uhh uhhh".split())
 
 
 def getSongInfo(song):
@@ -35,25 +29,6 @@ def getSongInfo(song):
         return(None, None, None)
     lyrics = Lyrics.getSongLyrics(title, artist, genius)
     return(title, artist, lyrics)
-
-
-def removeGeniusTags(lyrics):
-    # remove genius tags: [verse 1], [chorus], etc
-    while re.search('\[.*\]', lyrics):
-        lyrics = re.sub('\[.*\]', '', lyrics)
-    return(lyrics)
-
-
-def tokenizeSong(lyrics):
-    lyrics = lyrics.lower()
-    doc = tokenizer.tokenize(lyrics)
-    doc = [token for token in doc if (
-        not token.isnumeric()) and len(token) > 2]
-    doc = [token for token in doc if (not token in STOP_WORDS
-                                      and not token in moreStopWords)]
-    doc = [token for token in doc if token.isascii()]
-    doc = [lemmatizer.lemmatize(token) for token in doc]
-    return(doc)
 
 
 if __name__ == '__main__':
@@ -105,8 +80,8 @@ if __name__ == '__main__':
                         continue
 
                     songsUsedWriter.writerow([title, artist])
-                    lyrics = removeGeniusTags(lyrics)
-                    doc = tokenizeSong(lyrics)
+                    lyrics = Lyrics.removeGeniusTags(lyrics)
+                    doc = Lyrics.tokenizeSong(lyrics, tokenizer, lemmatizer)
                     songLyrics.write(' '.join(doc) + '\n')
                     docs.append(doc)
             playlists = sp.next(playlists)
