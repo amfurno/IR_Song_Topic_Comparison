@@ -1,15 +1,17 @@
-import Lyrics
-import API_Keys
 import csv
+import logging
+import re
+
 import spotipy
 from gensim.models import Phrases
 from lyricsgenius import Genius, genius
-from nltk.tokenize import RegexpTokenizer
 from nltk.stem.wordnet import WordNetLemmatizer
+from nltk.tokenize import RegexpTokenizer
 from spotipy.oauth2 import SpotifyClientCredentials
 
-import re
-import logging
+import API_Keys
+import Lyrics
+
 USER = 'spotify'  # all of our playlists will be coming from spotify
 # this is the top hits playlist, used for building test corpus
 TOP_HITS_ID = '37i9dQZF1DXcBWIGoYBM5M'

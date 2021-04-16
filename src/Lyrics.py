@@ -1,6 +1,7 @@
-from nltk.corpus import stopwords
 import re
 import sys
+
+from nltk.corpus import stopwords
 
 STOP_WORDS = set(stopwords.words('english'))
 moreStopWords = set(
