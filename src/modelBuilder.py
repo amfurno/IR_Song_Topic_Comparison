@@ -7,6 +7,8 @@ from gensim.models import LdaModel, ldamodel
 from gensim.models.coherencemodel import CoherenceModel
 from gensim.test.utils import datapath
 
+MODEL_LOCATION = 'outputs/model/model'
+
 if __name__ == '__main__':
 
     logging.basicConfig(
@@ -25,7 +27,7 @@ if __name__ == '__main__':
     print('Number of documents: %d' % len(corpus))
 
     # Set training parameters.
-    num_topics = 50
+    num_topics = 7
     chunksize = 2000
     passes = 10
     iterations = 400
@@ -55,4 +57,4 @@ if __name__ == '__main__':
           (num_topics, avg_topic_coherence))
     print('Average C_V topic coherence for %d topics: %.4f.' %
           (num_topics, coherenceModel.get_coherence()))
-    model.save("outputs/model/model")
+    model.save(MODEL_LOCATION)
