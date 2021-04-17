@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src\\corpusBuilder.py",
             "console": "integratedTerminal",
-            "cwd": "${fileDirname}"
+            "cwd": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src"
         },
         {
             "name": "Python: modelBuilder",
@@ -18,7 +18,23 @@
             "request": "launch",
             "program": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src\\modelBuilder.py",
             "console": "integratedTerminal",
-            "cwd": "${fileDirname}"
+            "cwd": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src"
+        },
+        {
+            "name": "Python: gui",
+            "type": "python",
+            "request": "launch",
+            "program": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src\\gui.py",
+            "console": "integratedTerminal",
+            "cwd": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src"
+        },
+        {
+            "name": "Python: compareSongs",
+            "type": "python",
+            "request": "launch",
+            "program": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src\\songComparison.py",
+            "console": "integratedTerminal",
+            "cwd": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src"
         }
     ]
 }

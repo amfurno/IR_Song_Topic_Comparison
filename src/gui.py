@@ -2,14 +2,22 @@ import tkinter
 import tkinter.font as font
 from tkinter import *
 
-import songComparison
+from gensim.models import LdaModel
+from lyricsgenius import Genius, genius
+
+import songComparison as sc
+import API_Keys
+from modelBuilder import MODEL_LOCATION
 
 # creates window
 
 
 class comparisonApp:
-    def __init__(self):
+    def __init__(self, genius, model):
         app = Tk()
+
+        self.genius = genius
+        self.model = model
 
         self.myfont = font.Font(family='Courier')
         app.geometry('650x300')
@@ -46,11 +54,21 @@ class comparisonApp:
         app.mainloop()
 
     def compareSongs(self):
-        print(self.artist1.get())
+        song1Lyrics = sc.getLyrics(
+            self.song1.get(), self.artist1.get(), genius)
+        song2Lyrics = sc.getLyrics(
+            self.song2.get(), self.artist2.get(), genius)
+        docs = [sc.tokenizeLyrics(song1Lyrics), sc.tokenizeLyrics(song2Lyrics)]
+        divergence = sc.compareSongs(model, docs)
+        print(divergence)
 
 
 # runs window
 if __name__ == '__main__':
+    genius = Genius(API_Keys.genius_access_token)
+    genius.timeout = 15
+    genius.sleep_time = 2
 
-    comparisonApp()
+    model = LdaModel.load(MODEL_LOCATION)
+    comparisonApp(genius, model)
     # clickGo.place(x=300, y=100, anchor=CENTER)
