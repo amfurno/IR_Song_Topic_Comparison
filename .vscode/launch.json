@@ -35,6 +35,14 @@
             "program": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src\\songComparison.py",
             "console": "integratedTerminal",
             "cwd": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src"
+        },
+        {
+            "name": "Python: testRunner",
+            "type": "python",
+            "request": "launch",
+            "program": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src\\modelTester.py",
+            "console": "integratedTerminal",
+            "cwd": "C:\\Users\\amfur\\Documents\\IR_Song_Topic_Comparison\\src"
         }
     ]
 }

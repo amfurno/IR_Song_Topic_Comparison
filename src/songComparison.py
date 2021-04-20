@@ -41,10 +41,9 @@ def toDenseArrays(dist1, dist2):
         dist2Dense[i[0]] = i[1]
     return(dist1Dense, dist2Dense)
 
-# compare 2 songs
 
-
-def compareSongs(model, docs):
+# computes the jensen-shannon divergence of 2 song
+def getSongDivergence(model, docs):
     dictionary = Dictionary(docs)
     newSongs = [dictionary.doc2bow(doc) for doc in docs]
     song1TopicDist = model[newSongs[0]]
@@ -59,16 +58,16 @@ def songComparison(model, song1, artist1, song2, artist2):
     genius.timeout = 15
     genius.sleep_time = 2
 
-    pprint.pprint(model.print_topics())
-
     lyrics1 = getLyrics(song1, artist1, genius)
     lyrics2 = getLyrics(song2, artist2, genius)
-    if lyrics1 is None or lyrics2 is None:
-        return None
-
+    if lyrics1 is None:
+        print(song1)
+        return(None)
+    if lyrics2 is None:
+        print(song2)
+        return(None)
     docs = [tokenizeLyrics(lyrics1), tokenizeLyrics(lyrics2)]
-    dist = compareSongs(model, docs)
-    print("%.4f" % dist)
+    dist = getSongDivergence(model, docs)
     return(dist)
 
 
