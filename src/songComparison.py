@@ -54,7 +54,7 @@ def compareSongs(model, docs):
     return(distance.jensenshannon(song1TopicDist, song2TopicDist))
 
 
-def driver(song1, song2, artist1, artist2):
+def songComparison(song1, song2, artist1, artist2):
     genius = Genius(API_Keys.genius_access_token)
     genius.timeout = 15
     genius.sleep_time = 2
@@ -68,6 +68,7 @@ def driver(song1, song2, artist1, artist2):
     docs = [tokenizeLyrics(lyrics1), tokenizeLyrics(lyrics2)]
     dist = compareSongs(model, docs)
     print("%.4f" % dist)
+    return(dist)
 
 
 if __name__ == '__main__':
@@ -75,7 +76,7 @@ if __name__ == '__main__':
     artist1 = 'lil nas x'
     song2 = 'panini'
     artist2 = 'lil nas x'
-    driver(song1, song2, artist1, artist2)
+    songComparison(song1, song2, artist1, artist2)
 
     # load model into memory
     # display gui

@@ -9,11 +9,8 @@ from gensim.test.utils import datapath
 
 MODEL_LOCATION = 'outputs/model/model'
 
-if __name__ == '__main__':
 
-    logging.basicConfig(
-        filename='model.log', format='%(asctime)s : %(levelname)s : %(message)s', level=logging.DEBUG)
-
+def modelBuilder():
     docs = []
     with open('outputs/corpus.txt', mode='r') as lyrics:
         for line in lyrics:
@@ -57,4 +54,12 @@ if __name__ == '__main__':
           (num_topics, avg_topic_coherence))
     print('Average C_V topic coherence for %d topics: %.4f.' %
           (num_topics, coherenceModel.get_coherence()))
+    return(model)
+
+
+if __name__ == '__main__':
+
+    logging.basicConfig(
+        filename='model.log', format='%(asctime)s : %(levelname)s : %(message)s', level=logging.DEBUG)
+    model = modelBuilder()
     model.save(MODEL_LOCATION)
