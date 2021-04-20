@@ -59,6 +59,8 @@ class comparisonApp:
         song2 = self.song2.get()
         artist2 = self.artist2.get()
         divergence = sc.songComparison(model, song1, artist1, song2, artist2)
+        if divergence is None:
+            print('error getting song lyrics')
 
 
 # runs window

@@ -63,6 +63,8 @@ def songComparison(model, song1, artist1, song2, artist2):
 
     lyrics1 = getLyrics(song1, artist1, genius)
     lyrics2 = getLyrics(song2, artist2, genius)
+    if lyrics1 is None or lyrics2 is None:
+        return None
 
     docs = [tokenizeLyrics(lyrics1), tokenizeLyrics(lyrics2)]
     dist = compareSongs(model, docs)
