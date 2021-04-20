@@ -44,7 +44,7 @@ def toDenseArrays(dist1, dist2):
 # compare 2 songs
 
 
-def getSongSimilarity(model, docs):
+def compareSongs(model, docs):
     dictionary = Dictionary(docs)
     newSongs = [dictionary.doc2bow(doc) for doc in docs]
     song1TopicDist = model[newSongs[0]]
@@ -54,7 +54,7 @@ def getSongSimilarity(model, docs):
     return(distance.jensenshannon(song1TopicDist, song2TopicDist))
 
 
-def songComparison(model, song1, song2, artist1, artist2):
+def songComparison(model, song1, artist1, song2, artist2):
     genius = Genius(API_Keys.genius_access_token)
     genius.timeout = 15
     genius.sleep_time = 2
@@ -65,7 +65,7 @@ def songComparison(model, song1, song2, artist1, artist2):
     lyrics2 = getLyrics(song2, artist2, genius)
 
     docs = [tokenizeLyrics(lyrics1), tokenizeLyrics(lyrics2)]
-    dist = getSongSimilarity(model, docs)
+    dist = compareSongs(model, docs)
     print("%.4f" % dist)
     return(dist)
 
@@ -76,4 +76,4 @@ if __name__ == '__main__':
     song2 = 'panini'
     artist2 = 'lil nas x'
     model = LdaModel.load(MODEL_LOCATION)
-    dist = songComparison(model, song1, song2, artist1, artist2)
+    dist = songComparison(model, song1, artist1, song2, artist2)
