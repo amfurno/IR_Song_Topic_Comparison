@@ -10,7 +10,7 @@ from gensim.test.utils import datapath
 MODEL_LOCATION = 'outputs/model/model'
 
 
-def modelBuilder():
+def modelBuilder(num_topics):
     docs = []
     with open('outputs/corpus.txt', mode='r') as lyrics:
         for line in lyrics:
@@ -24,9 +24,8 @@ def modelBuilder():
     print('Number of documents: %d' % len(corpus))
 
     # Set training parameters.
-    num_topics = 7
     chunksize = 2000
-    passes = 10
+    passes = 15
     iterations = 400
     eval_every = None  # Don't evaluate model perplexity, takes too much time.
 
