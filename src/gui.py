@@ -53,7 +53,7 @@ class comparisonApp:
 
         app.mainloop()
 
-    def compareSongs(self):  # TODO refactor to just call songComparison
+    def compareSongs(self):
         song1 = self.song1.get()
         artist1 = self.artist1.get()
         song2 = self.song2.get()
