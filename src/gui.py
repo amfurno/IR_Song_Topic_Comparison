@@ -54,13 +54,11 @@ class comparisonApp:
         app.mainloop()
 
     def compareSongs(self):  # TODO refactor to just call songComparison
-        song1Lyrics = sc.getLyrics(
-            self.song1.get(), self.artist1.get(), genius)
-        song2Lyrics = sc.getLyrics(
-            self.song2.get(), self.artist2.get(), genius)
-        docs = [sc.tokenizeLyrics(song1Lyrics), sc.tokenizeLyrics(song2Lyrics)]
-        divergence = sc.getSongSimilarity(model, docs)
-        print(divergence)
+        song1 = self.song1.get()
+        artist1 = self.artist1.get()
+        song2 = self.song2.get()
+        artist2 = self.artist2.get()
+        divergence = sc.songComparison(model, song1, artist1, song2, artist2)
 
 
 # runs window
