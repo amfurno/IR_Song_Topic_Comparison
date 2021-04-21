@@ -18,7 +18,10 @@ from modelBuilder import MODEL_LOCATION
 # gets the lyrics of a song
 def getLyrics(title, artist, genius):
     lyrics = Lyrics.getSongLyrics(title, artist, genius)
-    return(lyrics)
+    if lyrics is None:
+        return None
+    doc = tokenizeLyrics(lyrics)
+    return(doc)
 
 
 # clean songs just like the corpus
@@ -66,7 +69,7 @@ def songComparison(model, song1, artist1, song2, artist2):
     if lyrics2 is None:
         print(song2)
         return(None)
-    docs = [tokenizeLyrics(lyrics1), tokenizeLyrics(lyrics2)]
+    docs = [lyrics1, lyrics2]
     dist = getSongDivergence(model, docs)
     return(dist)
 
@@ -77,4 +80,5 @@ if __name__ == '__main__':
     song2 = 'panini'
     artist2 = 'lil nas x'
     model = LdaModel.load(MODEL_LOCATION)
+
     dist = songComparison(model, song1, artist1, song2, artist2)
