@@ -7,7 +7,8 @@ import modelBuilder as builder
 import songComparison as compare
 
 
-NUMBER_OF_TOPICS = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 50, 100]
+NUMBER_OF_TOPICS = [5, 6, 7, 8, 9, 10, 11, 12, 13,
+                    14, 15, 20, 25, 30, 40, 75, 100, 200, 300, 400]
 
 
 def runTest(model, songPair, songLyrics):
@@ -47,12 +48,14 @@ if __name__ == '__main__':
             else:
                 untrainedSongs.append(song)
 
-    with open("outputs/testResults.csv", mode='w', newline='') as results:
+    with open("outputs/testResults.csv", mode='a', newline='') as results:
         resultsWriter = csv.writer(results, delimiter=',', quotechar='"')
         resultsWriter.writerow(
-            ['number of topics', '% trained song comparisons correct',
+            ['number of topics',
+                '% trained song comparisons correct',
                 '% untrained song comparisons correct',
-                '% song comparisons correct for all songs'])
+                '% song comparisons correct for all songs',
+             ])
 
         for num_Topic in NUMBER_OF_TOPICS:
             model = builder.modelBuilder(num_Topic)
