@@ -60,7 +60,11 @@ class comparisonApp:
         artist2 = self.artist2.get()
         divergence = sc.songComparison(model, song1, artist1, song2, artist2)
         if divergence is None:
-            print('error getting song lyrics')
+            tkinter.messagebox.showerror(title="Results", message="Error getting son lyrics")
+        elif divergence < .2:
+            tkinter.messagebox.showinfo(title="Results", message="Your songs are alike!")
+        else:
+            tkinter.messagebox.showinfo(title="Results", message="Your songs are not alike!")
 
 
 # runs window
