@@ -8,9 +8,10 @@ from gensim.models.coherencemodel import CoherenceModel
 from gensim.test.utils import datapath
 
 MODEL_LOCATION = 'outputs/model/model'
+NUMBER_OF_TOPICS = 6
 
 
-def modelBuilder(num_topics):
+def modelBuilder(num_topics=NUMBER_OF_TOPICS):
     docs = []
     with open('outputs/corpus.txt', mode='r') as lyrics:
         for line in lyrics:

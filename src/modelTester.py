@@ -8,7 +8,7 @@ import songComparison as compare
 
 
 NUMBER_OF_TOPICS = [5, 6, 7, 8, 9, 10, 11, 12, 13,
-                    14, 15, 20, 25, 30, 40, 75, 100, 200, 300, 400]
+                    14, 15, 20, 25, 30, 40, 50, 75, 100, 200, 300, 400]
 
 
 def runTest(model, songPair, songLyrics):
@@ -20,9 +20,9 @@ def runTest(model, songPair, songLyrics):
     docs = [song1Lyrics, song2Lyrics]
     dist = compare.getSongDivergence(model, docs)
 
-    if dist >= .8 and song1[2] == song2[2]:
+    if dist <= .2 and song1[2] == song2[2]:
         return 1
-    if dist < .8 and song1[2] != song2[2]:
+    if dist > .2 and song1[2] != song2[2]:
         return 1
     else:
         return 0
